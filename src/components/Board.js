@@ -15,7 +15,7 @@ function Board() {
 
   function displayMsg(msg) {
     if (msg.msg === '/clear') {
-      setMessages([])
+      setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}}])
     } else if (msg.msg instanceof Array) {
       return msg.msg.map((cmd, i) => 
         <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
