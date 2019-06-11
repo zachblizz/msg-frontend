@@ -48,7 +48,7 @@ function UserProvider({children}) {
   }
 
   return (
-    <UserContext.Provider value={{userInfo, newUser, usersTyping, setUsersTyping}}>
+    <UserContext.Provider value={{userInfo, newUser, usersTyping, setUsersTyping, setUserInfo}}>
       {children}
     </UserContext.Provider> 
   )

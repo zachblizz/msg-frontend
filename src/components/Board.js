@@ -43,7 +43,14 @@ function Board() {
               style={style}
               key={msg.uuid}
             >
-              <div>{msg.msg}</div>
+              <div>
+                { msg.msg instanceof Array
+                  ? msg.msg.map((cmd, i) => 
+                      <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
+                    )
+                  : msg.msg
+                }
+              </div>
               <div 
                 style={{
                   width: '100%',
@@ -51,7 +58,7 @@ function Board() {
                   textAlign: 'left'
                 }}
               >
-                {msg.username} {moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
+                {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
               </div>
             </div>
           )

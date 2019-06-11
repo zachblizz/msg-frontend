@@ -6,14 +6,13 @@ import Board from '../../components/Board'
 import MessageBoardForm from './MessageBoardForm'
 
 function MessageBoard() {
-  const { userInfo } = useUser()
+  const { userInfo, setUserInfo } = useUser()
   const { setOnline } = useOnline()
   const { socket, socketCmds } = useSocket()
 
   React.useEffect(() => {
     if (socket && socketCmds) {
       socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
-      // socket.on(socketCmds.typing, ({user}) => setUsersTyping([...usersTyping, user]))
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
 
@@ -28,6 +27,7 @@ function MessageBoard() {
   function logout() {
     localStorage.removeItem('client:user')
     socket.disconnect()
+    setUserInfo({})
   }
 
   return (

@@ -13,7 +13,7 @@ function client(endpoint, {body, ...customConfig} = {}) {
     config.body = JSON.stringify(body)
   }
 
-  return fetch(`http://localhost:3000/${endpoint}`, config)
+  return fetch(`http://TXGDC-ZBLIZZARD:3000/${endpoint}`, config)
     .then(r => r.json())
 }
 

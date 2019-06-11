@@ -27,6 +27,10 @@ function MessageBoardForm({username}) {
     if (socket) {
       socket.emit(socketCmds.typing, {username})
     }
+
+    if (msg && msg.trim().length === 0) {
+      socket.emit(socketCmds.doneTyping, {username})
+    }
   }
   
   return (
@@ -36,10 +40,11 @@ function MessageBoardForm({username}) {
     >
       <input
         style={{
-          height: 33,
+          height: 35,
           width: '90%',
           flexDirection: 'column',
-          padding: '0px 5px'
+          padding: '0px 5px',
+          border: '1px solid #eee'
         }}
         onChange={onMessageChange}
         value={msg}
