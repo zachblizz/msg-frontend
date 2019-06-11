@@ -8,15 +8,12 @@ import MessageBoardForm from './MessageBoardForm'
 function MessageBoard() {
   const { userInfo } = useUser()
   const { setOnline } = useOnline()
-  const { socket,socketCmds } = useSocket()
+  const { socket, socketCmds } = useSocket()
 
   React.useEffect(() => {
     if (socket && socketCmds) {
       socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
-      socket.on(socketCmds.loggedOut, ({msg}) => {
-        console.log(msg)
-        alert(msg)
-      })
+      // socket.on(socketCmds.typing, ({user}) => setUsersTyping([...usersTyping, user]))
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
 
@@ -28,6 +25,10 @@ function MessageBoard() {
     }
   }, [socket, userInfo.user.username, socketCmds, setOnline])
 
+  function logout() {
+    localStorage.removeItem('client:user')
+    socket.disconnect()
+  }
 
   return (
     <div
@@ -49,7 +50,16 @@ function MessageBoard() {
           marginLeft: 30
         }}
       >
-        <div>welcome {userInfo.user.username}</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}
+        >
+          <div>welcome {userInfo.user.username}</div>
+          <div><div className='logout' onClick={logout}>logout</div></div>
+        </div>
         <Board />
         <MessageBoardForm username={userInfo.user.username} />
       </div>

@@ -24,6 +24,11 @@
   width: 300px;
 }
 
+.logout:hover {
+  cursor: pointer;
+  color: orange;
+}
+
 button {
   padding: 10px;
   border: 1px solid #eee;

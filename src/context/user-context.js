@@ -14,6 +14,8 @@ function UserProvider({children}) {
     return null
   })
 
+  const [usersTyping, setUsersTyping] = React.useState({})
+
   const newUser = async (username, setBtnInfo) => {
     try {
       if (!userInfo || !userInfo.userAdded) {
@@ -46,7 +48,7 @@ function UserProvider({children}) {
   }
 
   return (
-    <UserContext.Provider value={{userInfo, newUser}}>
+    <UserContext.Provider value={{userInfo, newUser, usersTyping, setUsersTyping}}>
       {children}
     </UserContext.Provider> 
   )

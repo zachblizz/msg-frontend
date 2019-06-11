@@ -17,6 +17,8 @@ function MessageBoardForm({username}) {
         msgTime: new Date(),
         uuid: uuid()
       })
+
+      socket.emit(socketCmds.doneTyping, {username})
     }
   }
 
@@ -34,9 +36,10 @@ function MessageBoardForm({username}) {
     >
       <input
         style={{
-          height: 30,
+          height: 33,
           width: '90%',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          padding: '0px 5px'
         }}
         onChange={onMessageChange}
         value={msg}
@@ -44,7 +47,8 @@ function MessageBoardForm({username}) {
       <button
         style={{
           width: '10%',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          border: '1px solid #ddd'
         }}
         type='submit'
         value='submit'

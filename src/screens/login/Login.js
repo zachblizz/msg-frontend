@@ -31,7 +31,8 @@ function Login() {
           <label htmlFor='username'>username</label><br />
           <input
             style={{
-              border: userInfo && userInfo.badUser ? '1px solid #ff5252' : '1px solid #ddd'
+              border: userInfo && userInfo.badUser ? '1px solid #ff5252' : '1px solid #ddd',
+              padding: '0px 5px'
             }}
             id='username'
             onChange={handleChange} 
