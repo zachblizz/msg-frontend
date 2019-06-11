@@ -4,6 +4,7 @@ import { useSocket } from '../../context/socket-context'
 import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
 import MessageBoardForm from './MessageBoardForm'
+import DateTimeFluent from '../../components/DateTimeFluent'
 
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
@@ -58,6 +59,7 @@ function MessageBoard() {
           }}
         >
           <div>welcome {userInfo.user.username}</div>
+          <DateTimeFluent />
           <div><div className='logout' onClick={logout}>logout</div></div>
         </div>
         <Board />
