@@ -5,57 +5,42 @@ import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
 import MessageBoardForm from './MessageBoardForm'
 import DateTimeFluent from '../../components/DateTimeFluent'
+import { getContainerStyle, getInnerContainerStyle } from '../../utils'
 
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
   const { setOnline } = useOnline()
   const { socket, socketCmds } = useSocket()
-
-  React.useEffect(() => {
-    if (socket && socketCmds) {
-      socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
-      socket.emit(socketCmds.newUser, {username: userInfo.user.username})
-    }
-
-    return () => {
-      if (socket) {
-        localStorage.removeItem('client:user')
-        socket.disconnect()
-      }
-    }
-  }, [socket, userInfo.user.username, socketCmds, setOnline])
-
-  function logout() {
+  const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')
     socket.disconnect()
     setUserInfo({})
-  }
+  }, [socket, setUserInfo])
+
+  React.useEffect(() => {
+    if (socket && socketCmds) {
+      socket.emit(socketCmds.newUser, {username: userInfo.user.username})
+    }
+
+    return logout
+  }, [socket, userInfo.user.username, socketCmds, setOnline, logout])
+
+  console.log('msg board...')
 
   return (
     <div
-      style={{
-        width: '90%',
-        height: 600,
-        padding: 30,
-        margin: '0 auto',
-        marginTop: 150,
-        border: '1px solid #eee',
-        display: 'flex',
-      }}
+      style={getContainerStyle()}
     >
-      <OnlineUsers />
+      { window.innerWidth > 400 && <OnlineUsers /> }
       <div
-        style={{
-          flexDirection: 'column',
-          width: '80%',
-          marginLeft: 30
-        }}
+        style={getInnerContainerStyle()}
       >
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            marginBottom: 12
           }}
         >
           <div>welcome {userInfo.user.username}</div>

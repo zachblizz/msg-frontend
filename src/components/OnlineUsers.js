@@ -4,12 +4,13 @@ import { useSocket } from '../context/socket-context'
 import Loading from './Loading';
 
 function OnlineUsers() {
-  const { online } = useOnline()
+  const { online, setOnline } = useOnline()
   const { usersTyping, setUsersTyping } = useUser()
   const { socket, socketCmds } = useSocket()
 
   React.useEffect(() => {
     if (socket) {
+      socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
       socket.on(socketCmds.typing, ({user}) => 
         setUsersTyping({...usersTyping, [user.username]: true})
       )
@@ -17,12 +18,14 @@ function OnlineUsers() {
         delete usersTyping[user.username]
         setUsersTyping({...usersTyping})
       })
+
       return () => {
         socket.removeEventListener(socketCmds.typing)
         socket.removeEventListener(socketCmds.doneTyping)
+        socket.removeEventListener(socketCmds.sendOnlineUsers)
       }
     }
-  }, [socket, socketCmds, setUsersTyping, usersTyping])
+  }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
   return (
     <div

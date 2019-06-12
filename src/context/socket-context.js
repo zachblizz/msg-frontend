@@ -2,7 +2,7 @@ import React from 'react'
 import io from 'socket.io-client'
 import client from '../utils/api-client'
 
-const socket = io('http://TXGDC-ZBLIZZARD:3000', {transports: ['websocket']})
+const socket = io('http://192.168.1.109:3000', {transports: ['websocket']})
 const SocketContext = React.createContext({socket, socketCmds: null})
 
 function SocketProvider({children}) {

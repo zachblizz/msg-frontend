@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import uuid from 'uuid'
 import { useSocket } from '../context/socket-context'
 
 function Board() {
@@ -15,9 +16,9 @@ function Board() {
 
   function displayMsg(msg) {
     if (msg.msg === '/clear') {
-      setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}}])
+      setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
     } else if (msg.msg instanceof Array) {
-      return msg.msg.map((cmd, i) => 
+      return msg.msg.map((cmd, i) =>
         <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
       )
     } else if (msg.type === 'html') {

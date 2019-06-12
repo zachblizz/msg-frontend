@@ -1,15 +1,17 @@
 import React from 'react'
-import { useSocket } from '../../context/socket-context'
 import uuid from 'uuid'
+import { useSocket } from '../../context/socket-context'
 
 function MessageBoardForm({username}) {
   const [msg, setMsg] = React.useState('')
+  const [typing, setTyping] = React.useState(false)
   const { socket, socketCmds } = useSocket()
 
   function handleSendMessage(event) {
     event.preventDefault()
 
-    if (socket && msg && msg.trim().length > 0) {
+    setTyping(false)
+    if (msg && msg.trim().length > 0) {
       setMsg('')
       socket.emit(socketCmds.receiveClientMsg, {
         username,
@@ -24,11 +26,11 @@ function MessageBoardForm({username}) {
 
   function onMessageChange(event) {
     setMsg(event.target.value)
-    if (socket) {
+    if (!typing) {
+      setTyping(true)
       socket.emit(socketCmds.typing, {username})
-    }
-
-    if (msg && msg.trim().length === 0) {
+    } else if (msg && msg.trim().length === 0) {
+      setTyping(false)
       socket.emit(socketCmds.doneTyping, {username})
     }
   }
@@ -46,6 +48,7 @@ function MessageBoardForm({username}) {
           padding: '0px 5px',
           border: '1px solid #eee'
         }}
+        placeholder='Enter message here...'
         onChange={onMessageChange}
         value={msg}
       />
@@ -53,7 +56,8 @@ function MessageBoardForm({username}) {
         style={{
           width: '10%',
           flexDirection: 'column',
-          border: '1px solid #ddd'
+          border: '1px solid #ddd',
+          alignItems: 'center'
         }}
         type='submit'
         value='submit'

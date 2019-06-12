@@ -23,9 +23,9 @@ function UserProvider({children}) {
           body: {username},
           method: 'put'
         })
-        localStorage.setItem('client:user', JSON.stringify(data))
-
+        
         if (data.userAdded) {
+          localStorage.setItem('client:user', JSON.stringify(data))
           setUserInfo({
             user: data.user,
             badUser: false
