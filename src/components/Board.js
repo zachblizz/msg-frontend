@@ -2,9 +2,11 @@ import React from 'react'
 import moment from 'moment'
 import uuid from 'uuid'
 import { useSocket } from '../context/socket-context'
+import { useUser } from '../context/user-context'
 
 function Board() {
   const { socket, socketCmds } = useSocket()
+  const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
 
   React.useEffect(() => {
@@ -51,16 +53,16 @@ function Board() {
         }}
       >
         {messages.map(msg => {
-          const style = {
-            width: '98%',
-            textAlign: 'left',
-            margin: '10px 5px',
-            padding: '0px 5px'
-          }
+          const textAlign = userInfo.user.username === msg.username ? 'right' : 'left'
 
           return (
             <div
-              style={style}
+              style={{
+                width: '98%',
+                textAlign,
+                margin: '10px 5px',
+                padding: '0px 5px'
+              }}
               key={msg.uuid}
             >
               <div>
@@ -70,7 +72,7 @@ function Board() {
                 style={{
                   width: '100%',
                   fontSize: 9,
-                  textAlign: 'left'
+                  textAlign
                 }}
               >
                 {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}

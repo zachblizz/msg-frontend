@@ -1,10 +1,10 @@
 import React from 'react'
-import { useUser } from '../../context/user-context'
-import { useSocket } from '../../context/socket-context'
 import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
 import MessageBoardForm from './MessageBoardForm'
 import DateTimeFluent from '../../components/DateTimeFluent'
+import { useUser } from '../../context/user-context'
+import { useSocket } from '../../context/socket-context'
 import { getContainerStyle, getInnerContainerStyle } from '../../utils'
 
 function MessageBoard() {
@@ -23,8 +23,6 @@ function MessageBoard() {
 
     return logout
   }, [socket, userInfo.user.username, socketCmds, logout])
-
-  console.log('msg board...')
 
   return (
     <div
