@@ -1,5 +1,5 @@
 import React from 'react'
-import { useUser, useOnline } from '../../context/user-context'
+import { useUser } from '../../context/user-context'
 import { useSocket } from '../../context/socket-context'
 import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
@@ -9,7 +9,6 @@ import { getContainerStyle, getInnerContainerStyle } from '../../utils'
 
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
-  const { setOnline } = useOnline()
   const { socket, socketCmds } = useSocket()
   const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')
@@ -23,7 +22,7 @@ function MessageBoard() {
     }
 
     return logout
-  }, [socket, userInfo.user.username, socketCmds, setOnline, logout])
+  }, [socket, userInfo.user.username, socketCmds, logout])
 
   console.log('msg board...')
 
