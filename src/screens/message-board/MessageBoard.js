@@ -21,7 +21,7 @@ function MessageBoard() {
     }
 
     return () => {
-      if (socket) {
+      if (socket && userInfo.user) {
         disconnect()
       }
     }

@@ -39,7 +39,7 @@ function Board() {
     <div
       style={{
         overflow: 'hidden',
-        height: '90%',
+        height: '87%',
         marginBottom: 5,
         border: '1px solid #eee',
       }}
