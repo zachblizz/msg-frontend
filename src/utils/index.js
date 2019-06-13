@@ -1,4 +1,7 @@
-function getContainerStyle() {
+function getContainerStyle(theme) {
+  const background = theme === 'Lite' ? '#fff' : '#333'
+  const color = theme === 'Lite' ? '#333' : '#fff'
+
   if (window.innerWidth < 400) {
     return {
       height: 600,
@@ -15,6 +18,8 @@ function getContainerStyle() {
     marginTop: 150,
     border: '1px solid #eee',
     display: 'flex',
+    background,
+    color,
   }
 }
 

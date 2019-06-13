@@ -17,22 +17,24 @@ function Board() {
   }, [messages, socket, socketCmds.receiveServerMsg])
 
   function displayMsg(msg) {
-    if (msg.msg === '/clear') {
-      setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
-    } else if (msg.msg instanceof Array) {
-      return msg.msg.map((cmd, i) =>
-        <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
-      )
-    } else if (msg.type === 'html') {
-      return <div dangerouslySetInnerHTML={{__html: msg.msg}} />
-    } else if (msg.image) {
-      let arrayBufferView = new Uint8Array(msg.buffer)
-      let blob = new Blob([arrayBufferView], {type: 'image/jpeg'})
-      let imgUrl = URL.createObjectURL(blob)
-      return <img key={msg.uuid} src={imgUrl} alt="oh well" />
-    }
+    // if (msg) {
+      if (msg.msg === '/clear') {
+        setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
+      } else if (msg.msg instanceof Array) {
+        return msg.msg.map((cmd, i) =>
+          <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
+        )
+      } else if (msg.type === 'html') {
+        return <div dangerouslySetInnerHTML={{__html: msg.msg}} />
+      } else if (msg.image) {
+        let arrayBufferView = new Uint8Array(msg.buffer)
+        let blob = new Blob([arrayBufferView], {type: 'image/jpeg'})
+        let imgUrl = URL.createObjectURL(blob)
+        return <img key={msg.uuid} src={imgUrl} alt="oh well" />
+      }
 
-    return msg.msg
+      return msg.msg
+    // }
   }
 
   return (
