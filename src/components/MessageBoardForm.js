@@ -1,11 +1,15 @@
 import React from 'react'
 import uuid from 'uuid'
-import { useSocket } from '../../context/socket-context'
+import { useSocket } from '../context/socket-context'
 
-function MessageBoardForm({username}) {
+function MessageBoardForm({username, theme}) {
   const [msg, setMsg] = React.useState('')
   const [typing, setTyping] = React.useState(false)
   const { socket, socketCmds } = useSocket()
+
+  let color = theme === 'Lite'
+    ? { color: '#333', background: '#fff' }
+    : { color: '#fff', background: '#333' }
 
   function handleSendMessage(event) {
     event.preventDefault()
@@ -34,6 +38,7 @@ function MessageBoardForm({username}) {
       socket.emit(socketCmds.doneTyping, {username})
     }
   }
+
   
   return (
     <form
@@ -46,7 +51,9 @@ function MessageBoardForm({username}) {
           width: '90%',
           flexDirection: 'column',
           padding: '0px 5px',
-          border: '1px solid #eee'
+          border: '1px solid #eee',
+          background: color.background,
+          color: color.color,
         }}
         placeholder='Enter message here...'
         onChange={onMessageChange}
