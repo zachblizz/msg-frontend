@@ -16,7 +16,7 @@ function MessageBoard() {
   }, [setUserInfo])
 
   React.useEffect(() => {
-    if (!socket) {
+    if (!socket && userInfo.user) {
       connect()
     }
 
@@ -25,15 +25,14 @@ function MessageBoard() {
         disconnect()
       }
     }
-  }, [socket, connect, disconnect])
+  }, [socket, connect, disconnect, userInfo.user])
 
   React.useEffect(() => {
-    if (socket && socketCmds) {
+    if (socket && socketCmds && userInfo.user) {
+      console.log('new user')
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
-  }, [socket, userInfo.user.username, socketCmds])
-
-  console.log('msg board')
+  }, [socket, userInfo.user, socketCmds])
 
   return (
     <div

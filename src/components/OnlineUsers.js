@@ -9,14 +9,18 @@ function OnlineUsers() {
   const { socket, socketCmds } = useSocket()
 
   React.useEffect(() => {
-    if (socket) {
+    if (socket && socketCmds) {
       socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
-      socket.on(socketCmds.typing, ({user}) => 
-        setUsersTyping({...usersTyping, [user.username]: true})
-      )
+      socket.on(socketCmds.typing, ({user}) => {
+        if (user) {
+          setUsersTyping({...usersTyping, [user.username]: true})
+        }
+      })
       socket.on(socketCmds.doneTyping, ({user}) => {
-        delete usersTyping[user.username]
-        setUsersTyping({...usersTyping})
+        if (user) {
+          delete usersTyping[user.username]
+          setUsersTyping({...usersTyping})
+        }
       })
 
       return () => {
@@ -26,8 +30,6 @@ function OnlineUsers() {
       }
     }
   }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
-
-  console.log('online')
 
   return (
     <div
