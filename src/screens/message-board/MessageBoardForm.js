@@ -24,6 +24,8 @@ function MessageBoardForm({username}) {
     }
   }
 
+  console.log('form')
+
   function onMessageChange(event) {
     setMsg(event.target.value)
     if (!typing) {

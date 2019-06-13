@@ -2,11 +2,10 @@ import React from 'react'
 import io from 'socket.io-client'
 import client from '../utils/api-client'
 
-const socket = io(`http://localhost:3000`, {transports: ['websocket']})
-const SocketContext = React.createContext({socket, socketCmds: null})
+const SocketContext = React.createContext()
 
 function SocketProvider({children}) {
-  const { socket } = React.useContext(SocketContext)
+  const [socket, setSocket] = React.useState(null)
   const [socketCmds, setSocketCmds] = React.useState({})
 
   React.useEffect(() => {
@@ -22,9 +21,18 @@ function SocketProvider({children}) {
 
     getSocketCmds()
   }, [])
-  
+
+  function connect() {
+    setSocket(io(`http://localhost:3000`, {transports: ['websocket']}))
+  }
+
+  function disconnect() {
+    socket.disconnect()
+    setSocket(null)
+  }
+
   return (
-    <SocketContext.Provider value={{socket, socketCmds}}>
+    <SocketContext.Provider value={{socket, socketCmds, connect, disconnect}}>
       {children}
     </SocketContext.Provider>
   )
