@@ -34,7 +34,9 @@ function Board() {
 
     return msg.msg
   }
-  
+
+  console.log('board')
+
   return (
     <div
       style={{

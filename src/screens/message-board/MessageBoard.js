@@ -9,20 +9,31 @@ import { getContainerStyle, getInnerContainerStyle } from '../../utils'
 
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
-  const { socket, socketCmds } = useSocket()
+  const { socket, socketCmds, connect, disconnect } = useSocket()
   const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')
-    socket.disconnect()
     setUserInfo({})
-  }, [socket, setUserInfo])
+  }, [setUserInfo])
+
+  React.useEffect(() => {
+    if (!socket) {
+      connect()
+    }
+
+    return () => {
+      if (socket) {
+        disconnect()
+      }
+    }
+  }, [socket, connect, disconnect])
 
   React.useEffect(() => {
     if (socket && socketCmds) {
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
+  }, [socket, userInfo.user.username, socketCmds])
 
-    return logout
-  }, [socket, userInfo.user.username, socketCmds, logout])
+  console.log('msg board')
 
   return (
     <div

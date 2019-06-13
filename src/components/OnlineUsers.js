@@ -27,6 +27,8 @@ function OnlineUsers() {
     }
   }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
+  console.log('online')
+
   return (
     <div
       style={{
