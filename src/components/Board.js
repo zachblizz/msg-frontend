@@ -67,7 +67,7 @@ function Board() {
               }}
               key={msg.uuid}
             >
-              <div>
+              <div style={msg.style}>
                 {displayMsg(msg)}
               </div>
               <div 
