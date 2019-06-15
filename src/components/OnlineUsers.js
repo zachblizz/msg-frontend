@@ -1,12 +1,15 @@
 import React from 'react'
+import Loading from './Loading'
+import colors from '../utils/colors'
 import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
-import Loading from './Loading';
+import { useTheme } from '../context/theme-context'
 
 function OnlineUsers() {
   const { online, setOnline } = useOnline()
   const { usersTyping, setUsersTyping } = useUser()
   const { socket, socketCmds } = useSocket()
+  const { theme } = useTheme()
 
   React.useEffect(() => {
     if (socket && socketCmds) {
@@ -62,7 +65,9 @@ function OnlineUsers() {
                 >
                   <button
                     style={{
-                      width: '80%'
+                      width: '80%',
+                      background: colors[theme].btnBackground,
+                      color: colors[theme].color
                     }}
                   >
                     {user.username}

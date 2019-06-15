@@ -23,7 +23,9 @@ function SocketProvider({children}) {
   }, [])
 
   function connect() {
-    setSocket(io(`http://localhost:3000`, {transports: ['websocket']}))
+    if (!socket) {
+      setSocket(io(`http://localhost:3000`, {transports: ['websocket']}))
+    }
   }
 
   function disconnect() {

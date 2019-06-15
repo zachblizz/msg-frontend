@@ -24,7 +24,7 @@
   width: 300px;
 }
 
-.logout:hover {
+.hover-div:hover {
   cursor: pointer;
   color: orange;
 }

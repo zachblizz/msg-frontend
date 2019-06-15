@@ -1,4 +1,6 @@
-function getContainerStyle() {
+import colors from './colors'
+
+function getContainerStyle(theme) {
   if (window.innerWidth < 400) {
     return {
       height: 600,
@@ -15,6 +17,7 @@ function getContainerStyle() {
     marginTop: 150,
     border: '1px solid #eee',
     display: 'flex',
+    ...colors[theme]
   }
 }
 
