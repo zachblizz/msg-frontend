@@ -30,7 +30,7 @@ function Board() {
         let arrayBufferView = new Uint8Array(msg.buffer)
         let blob = new Blob([arrayBufferView], {type: 'image/jpeg'})
         let imgUrl = URL.createObjectURL(blob)
-        return <img key={msg.uuid} src={imgUrl} alt="oh well" />
+        return <img key={msg.uuid} src={imgUrl} alt="oh well" title={msg.msg} />
       }
 
       return msg.msg
