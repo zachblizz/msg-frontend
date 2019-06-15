@@ -32,7 +32,6 @@ function MessageBoard() {
 
   React.useEffect(() => {
     if (socket && socketCmds && userInfo.user) {
-      console.log('new user')
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
   }, [socket, userInfo.user, socketCmds])
@@ -50,13 +49,14 @@ function MessageBoard() {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
             marginBottom: 12
           }}
         >
           <div>welcome {userInfo.user.username}</div>
           <DateTimeFluent />
-          <div className='logout' onClick={logout}>logout</div>
           <ThemeBtn />
+          <div className='hover-div' onClick={logout}>logout</div>
         </div>
         <Board />
         <MessageBoardForm username={userInfo.user.username} theme={theme} />
