@@ -8,16 +8,24 @@ function Board() {
   const { socket, socketCmds } = useSocket()
   const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
+  const boardRef = React.createRef()
 
   React.useEffect(() => {
     if (socket) {
       socket.on(socketCmds.receiveServerMsg, msg => setMessages([...messages, msg]))
       return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
-  }, [messages, socket, socketCmds.receiveServerMsg])
+  }, [messages, socket, socketCmds.receiveServerMsg, boardRef])
 
-  function displayMsg(msg) {
-    // if (msg) {
+  React.useEffect(() => {
+    const boardHeight = boardRef.current.scrollHeight
+    const clientHeight = boardRef.current.clientHeight
+    const maxScrollTop = boardHeight - clientHeight
+    boardRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
+  }, [messages, boardRef])
+
+  const displayMsg = React.useCallback((msg) => {
+    if (msg) {
       if (msg.msg === '/clear') {
         setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
       } else if (msg.msg instanceof Array) {
@@ -34,8 +42,8 @@ function Board() {
       }
 
       return msg.msg
-    // }
-  }
+    }
+  }, [])
 
   return (
     <div
@@ -47,10 +55,12 @@ function Board() {
       }}
     >
       <div
+        ref={boardRef}
+        // onScroll={handleScroll}
         style={{
           height: 'calc(100% + 7px)',
-          width: 'calc(100% + 17px)',
-          margin: '10px 0px',
+          width: '100%',
+          margin: '0 autose',
           overflow: 'scroll'
         }}
       >

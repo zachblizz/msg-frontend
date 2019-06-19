@@ -18,7 +18,8 @@ function MessageBoard() {
     setUserInfo({})
   }, [setUserInfo])
 
-  React.useEffect(() => {
+  React.useMemo(() => {
+    console.log('connect')
     if (!socket && userInfo.user) {
       connect()
     }
@@ -30,7 +31,8 @@ function MessageBoard() {
     }
   }, [socket, connect, disconnect, userInfo.user])
 
-  React.useEffect(() => {
+  React.useMemo(() => {
+    console.log('emit')
     if (socket && socketCmds && userInfo.user) {
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }

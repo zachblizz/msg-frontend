@@ -13,7 +13,7 @@ function client(endpoint, {body, ...customConfig} = {}) {
     config.body = JSON.stringify(body)
   }
 
-  return fetch(`http://localhost:3000/api/${endpoint}`, config)
+  return fetch(`https://msg-backend.herokuapp.com/api/${endpoint}`, config)
     .then(r => r.json())
 }
 

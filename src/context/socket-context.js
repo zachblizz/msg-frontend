@@ -23,11 +23,12 @@ function SocketProvider({children}) {
   }, [])
 
   function connect() {
-    setSocket(io(`http://localhost:3000`, {transports: ['websocket']}))
+    setSocket(io(`https://msg-backend.herokuapp.com`, {transports: ['websocket']}))
   }
 
   function disconnect() {
     socket.disconnect()
+    socket.removeAllListeners()
     setSocket(null)
   }
 
