@@ -13,7 +13,7 @@ function client(endpoint, {body, ...customConfig} = {}) {
     config.body = JSON.stringify(body)
   }
 
-  return fetch(`http://localhost:3000/api/${endpoint}`, config)
+  return fetch(`http://localhost:8080/api/${endpoint}`, config)
     .then(r => r.json())
 }
 

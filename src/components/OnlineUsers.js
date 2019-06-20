@@ -1,9 +1,11 @@
 import React from 'react'
 import Loading from './Loading'
-import colors from '../utils/colors'
+// import colors from '../utils/colors'
 import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
 import { useTheme } from '../context/theme-context'
+
+import '../styles/Online.css'
 
 function OnlineUsers() {
   const { online, setOnline } = useOnline()
@@ -35,23 +37,8 @@ function OnlineUsers() {
   }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
   return (
-    <div
-      style={{
-        width: '20%',
-        height: '100%',
-        overflow: 'hidden',
-        borderRight: '1px solid #eee',
-      }}
-    >
-      <div
-        style={{
-          height: 'calc(100% + 17px)',
-          width: 'calc(100% + 16px)',
-          flexDirection: 'column',
-          textAlign: 'left',
-          overflow: 'scroll'
-        }}
-      >
+    <div className='online-container-no-scroll'>
+      <div className='online-container-scroll'>
         <h3>Online</h3>
         {
           !online.length === 0
@@ -64,11 +51,8 @@ function OnlineUsers() {
                   }}
                 >
                   <button
-                    style={{
-                      width: '80%',
-                      background: colors[theme].btnBackground,
-                      color: colors[theme].color
-                    }}
+                    className={theme === 'lite' ? 'lite-btn' : 'dark-btn'}
+                    style={{width: '80%'}}
                   >
                     {user.username}
                     {usersTyping[user.username] && '...'}

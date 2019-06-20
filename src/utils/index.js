@@ -12,10 +12,8 @@ function getContainerStyle(theme) {
   return {
     width: '90%',
     height: 600,
-    padding: 30,
     margin: '0 auto',
     marginTop: 150,
-    border: '1px solid #eee',
     display: 'flex',
     ...colors[theme]
   }
@@ -31,8 +29,8 @@ function getInnerContainerStyle() {
   
   return {
     flexDirection: 'column',
-    width: '80%',
-    marginLeft: 30
+    background: '#f6f8fc',
+    width: '80%'
   }
 }
 

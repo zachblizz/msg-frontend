@@ -23,13 +23,12 @@ function SocketProvider({children}) {
   }, [])
 
   function connect() {
-    if (!socket) {
-      setSocket(io(`http://localhost:3000`, {transports: ['websocket']}))
-    }
+    setSocket(io(`http://localhost:8080`, {transports: ['websocket']}))
   }
 
   function disconnect() {
     socket.disconnect()
+    socket.removeAllListeners()
     setSocket(null)
   }
 

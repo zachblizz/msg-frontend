@@ -3,11 +3,13 @@ import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
 import MessageBoardForm from '../../components/MessageBoardForm'
 import DateTimeFluent from '../../components/DateTimeFluent'
-import ThemeBtn from '../../components/ThemeBtn'
+// import ThemeBtn from '../../components/ThemeBtn'
 import { useUser } from '../../context/user-context'
 import { useSocket } from '../../context/socket-context'
 import { useTheme } from '../../context/theme-context'
-import { getContainerStyle, getInnerContainerStyle } from '../../utils'
+// import { getInnerContainerStyle } from '../../utils'
+
+import '../../styles/MsgBoard.css'
 
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
@@ -18,7 +20,8 @@ function MessageBoard() {
     setUserInfo({})
   }, [setUserInfo])
 
-  React.useEffect(() => {
+  React.useMemo(() => {
+    console.log('connect')
     if (!socket && userInfo.user) {
       connect()
     }
@@ -30,33 +33,24 @@ function MessageBoard() {
     }
   }, [socket, connect, disconnect, userInfo.user])
 
-  React.useEffect(() => {
+  React.useMemo(() => {
+    console.log('emit')
     if (socket && socketCmds && userInfo.user) {
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
     }
   }, [socket, userInfo.user, socketCmds])
 
   return (
-    <div
-      style={getContainerStyle(theme)}
-    >
+    <div className='msg-board-container'>
       { window.innerWidth > 400 && <OnlineUsers /> }
-      <div
-        style={getInnerContainerStyle()}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 12
-          }}
-        >
-          <div>welcome {userInfo.user.username}</div>
-          <DateTimeFluent />
-          <ThemeBtn />
-          <div className='hover-div' onClick={logout}>logout</div>
+      <div className='msg-board-inner-container'>
+        <div className='welcome-container'>
+          <div className='welcome-centered'>
+            <div>welcome {userInfo.user.username}</div>
+            <DateTimeFluent />
+            {/* <ThemeBtn /> */}
+            <div className='hover-div' onClick={logout}>logout</div>
+          </div>
         </div>
         <Board />
         <MessageBoardForm username={userInfo.user.username} theme={theme} />

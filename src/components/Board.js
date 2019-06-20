@@ -1,25 +1,34 @@
 import React from 'react'
 import moment from 'moment'
-import uuid from 'uuid'
 import { useSocket } from '../context/socket-context'
 import { useUser } from '../context/user-context'
+
+import '../styles/Board.css'
 
 function Board() {
   const { socket, socketCmds } = useSocket()
   const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
+  const boardRef = React.createRef()
 
   React.useEffect(() => {
     if (socket) {
       socket.on(socketCmds.receiveServerMsg, msg => setMessages([...messages, msg]))
       return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
-  }, [messages, socket, socketCmds.receiveServerMsg])
+  }, [messages, socket, socketCmds.receiveServerMsg, boardRef])
 
-  function displayMsg(msg) {
-    // if (msg) {
+  React.useEffect(() => {
+    const boardHeight = boardRef.current.scrollHeight
+    const clientHeight = boardRef.current.clientHeight
+    const maxScrollTop = boardHeight - clientHeight
+    boardRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
+  }, [messages, boardRef])
+
+  const displayMsg = React.useCallback((msg) => {
+    if (msg) {
       if (msg.msg === '/clear') {
-        setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
+        setMessages([])
       } else if (msg.msg instanceof Array) {
         return msg.msg.map((cmd, i) =>
           <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
@@ -34,50 +43,42 @@ function Board() {
       }
 
       return msg.msg
-    // }
-  }
+    }
+  }, [])
 
   return (
-    <div
-      style={{
-        overflow: 'hidden',
-        height: '87%',
-        marginBottom: 5,
-        border: '1px solid #eee',
-      }}
-    >
+    <div className='board-container-no-scroll'>
       <div
-        style={{
-          height: 'calc(100% + 7px)',
-          width: 'calc(100% + 17px)',
-          margin: '10px 0px',
-          overflow: 'scroll'
-        }}
+        ref={boardRef}
+        className='board-container-scroll'
       >
         {messages.map(msg => {
-          const textAlign = userInfo.user.username === msg.username ? 'right' : 'left'
+          const sameUser = userInfo.user.username === msg.username
+          const color = sameUser ? '#fff' : '#585858'
+          const background = sameUser ? '#4e71ff' : '#fff'
+          const userClass = sameUser ? 'current-user' : 'other-user'
 
           return (
-            <div
-              style={{
-                width: '98%',
-                textAlign,
-                margin: '10px 5px',
-                padding: '0px 5px'
-              }}
-              key={msg.uuid}
-            >
-              <div style={msg.style}>
-                {displayMsg(msg)}
-              </div>
-              <div 
+            <div style={{display: 'flex', width: '100%'}} key={msg.uuid}>
+              {sameUser && <div className='hidden-msg'></div>}
+              <div
+                className={`msg-container ${userClass}`}
                 style={{
-                  width: '100%',
-                  fontSize: 9,
-                  textAlign
+                  color,
+                  background
                 }}
               >
-                {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
+                <div style={{...msg.style, marginBottom: 10 }}>
+                  {displayMsg(msg)}
+                </div>
+                <div 
+                  style={{
+                    width: '100%',
+                    fontSize: 9,
+                  }}
+                >
+                  {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
+                </div>
               </div>
             </div>
           )

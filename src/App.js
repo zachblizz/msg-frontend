@@ -12,6 +12,7 @@ function App() {
   const { userInfo } = useUser()
 
   React.useEffect(() => {
+    document.title = 'msg me'
     loadMessageBoard()
   }, [])
 
@@ -22,9 +23,9 @@ function App() {
           <div>loading...</div>
         </Loading>
       }>
-        { userInfo && userInfo.user && userInfo.user.username 
+        { userInfo && userInfo.user && userInfo.user.username
           ? <MessageBoard />
-          : <Login /> 
+          : <Login />
         }
       </React.Suspense>
     </div>

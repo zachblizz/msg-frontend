@@ -1,0 +1,21 @@
+.board-container-no-scroll {
+  overflow: hidden;
+  height: 88%;
+  width: 85%;
+  margin: 0 auto;
+  display: flex;
+  background: #f6f8fc;
+  margin-top: 5px;
+}
+
+.board-container-scroll {
+  height: calc(100% + 17px);
+  width: 100%;
+  margin: 0 auto;
+  overflow: scroll;
+}
+
+.hidden-msg {
+  width: 50%;
+  height: 30px;
+}
