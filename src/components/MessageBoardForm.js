@@ -49,8 +49,6 @@ function MessageBoardForm({username, theme}) {
           flexDirection: 'column',
           padding: '11px 5px',
           border: '1px solid #eee',
-          borderTopLeftRadius: 10,
-          borderBottomLeftRadius: 10,
           ...colors[theme]
         }}
         placeholder='Enter message here...'

@@ -69,7 +69,7 @@ function Board() {
               className='msg-container'
               key={msg.uuid}
             >
-              <div style={{...msg.style, marginBottom: 10, color: '#6f6f6f'}}>
+              <div style={{...msg.style, marginBottom: 10, color: '#585858'}}>
                 {displayMsg(msg)}
               </div>
               <div 

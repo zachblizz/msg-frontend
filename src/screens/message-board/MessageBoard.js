@@ -53,6 +53,8 @@ function MessageBoard() {
             justifyContent: 'space-between',
             alignItems: 'center',
             background: '#f2f3f7',
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
             padding: 20
           }}
         >

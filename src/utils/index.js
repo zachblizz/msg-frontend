@@ -29,6 +29,7 @@ function getInnerContainerStyle() {
   
   return {
     flexDirection: 'column',
+    background: '#f6f8fc',
     width: '80%'
   }
 }

@@ -40,7 +40,6 @@ function OnlineUsers() {
         width: '20%',
         height: '100%',
         overflow: 'hidden',
-        borderRight: '1px solid #eee',
         background: '#fff',
         padding: '0px 10px'
       }}
