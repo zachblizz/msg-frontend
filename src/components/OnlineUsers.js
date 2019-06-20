@@ -5,6 +5,8 @@ import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
 import { useTheme } from '../context/theme-context'
 
+import '../styles/Online.css'
+
 function OnlineUsers() {
   const { online, setOnline } = useOnline()
   const { usersTyping, setUsersTyping } = useUser()
@@ -35,24 +37,8 @@ function OnlineUsers() {
   }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
   return (
-    <div
-      style={{
-        width: '20%',
-        height: '100%',
-        overflow: 'hidden',
-        background: '#fff',
-        padding: '0px 10px'
-      }}
-    >
-      <div
-        style={{
-          height: 'calc(100% + 17px)',
-          width: 'calc(100% + 16px)',
-          flexDirection: 'column',
-          textAlign: 'left',
-          overflow: 'scroll'
-        }}
-      >
+    <div className='online-container-no-scroll'>
+      <div className='online-container-scroll'>
         <h3>Online</h3>
         {
           !online.length === 0

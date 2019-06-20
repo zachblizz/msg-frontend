@@ -1,0 +1,16 @@
+.online-container-no-scroll {
+  width: 20%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  padding: 0px 10px;
+  color: #5b5b5b;
+}
+
+.online-container-scroll {
+  height: calc(100% + 17px);
+  width: calc(100% + 27px);
+  flex-direction: column;
+  text-align: left;
+  overflow: scroll;
+}

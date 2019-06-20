@@ -39,7 +39,7 @@ function MessageBoardForm({username, theme}) {
 
   return (
     <form
-      style={{display: 'flex', background: '#f6f8fc'}}
+      style={{display: 'flex', background: '#f6f8fc', width: '85%', margin: '0 auto'}}
       onSubmit={handleSendMessage}
     >
       <input

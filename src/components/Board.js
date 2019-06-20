@@ -1,11 +1,13 @@
 import React from 'react'
 import moment from 'moment'
 import { useSocket } from '../context/socket-context'
-// import { useUser } from '../context/user-context'
+import { useUser } from '../context/user-context'
+
+import '../styles/Board.css'
 
 function Board() {
   const { socket, socketCmds } = useSocket()
-  // const { userInfo } = useUser()
+  const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
   const boardRef = React.createRef()
 
@@ -45,40 +47,38 @@ function Board() {
   }, [])
 
   return (
-    <div
-      style={{
-        overflow: 'hidden',
-        height: '81%',
-        display: 'flex',
-        background: '#f6f8fc',
-      }}
-    >
+    <div className='board-container-no-scroll'>
       <div
         ref={boardRef}
-        // onScroll={handleScroll}
-        style={{
-          height: 'calc(100% + 7px)',
-          width: '100%',
-          margin: '0 autose',
-          overflow: 'scroll'
-        }}
+        className='board-container-scroll'
       >
         {messages.map(msg => {
+          const sameUser = userInfo.user.username === msg.username
+          const color = sameUser ? '#fff' : '#585858'
+          const background = sameUser ? '#4e71ff' : '#fff'
+          const userClass = sameUser ? 'current-user' : 'other-user'
+
           return (
-            <div
-              className='msg-container'
-              key={msg.uuid}
-            >
-              <div style={{...msg.style, marginBottom: 10, color: '#585858'}}>
-                {displayMsg(msg)}
-              </div>
-              <div 
+            <div style={{display: 'flex', width: '100%'}} key={msg.uuid}>
+              {sameUser && <div className='hidden-msg'></div>}
+              <div
+                className={`msg-container ${userClass}`}
                 style={{
-                  width: '100%',
-                  fontSize: 9,
+                  color,
+                  background
                 }}
               >
-                {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
+                <div style={{...msg.style, marginBottom: 10 }}>
+                  {displayMsg(msg)}
+                </div>
+                <div 
+                  style={{
+                    width: '100%',
+                    fontSize: 9,
+                  }}
+                >
+                  {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}
+                </div>
               </div>
             </div>
           )
