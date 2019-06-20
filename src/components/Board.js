@@ -1,12 +1,11 @@
 import React from 'react'
 import moment from 'moment'
-import uuid from 'uuid'
 import { useSocket } from '../context/socket-context'
-import { useUser } from '../context/user-context'
+// import { useUser } from '../context/user-context'
 
 function Board() {
   const { socket, socketCmds } = useSocket()
-  const { userInfo } = useUser()
+  // const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
   const boardRef = React.createRef()
 
@@ -27,7 +26,7 @@ function Board() {
   const displayMsg = React.useCallback((msg) => {
     if (msg) {
       if (msg.msg === '/clear') {
-        setMessages([{msg: 'BOARD CLEARED!!', style: {color: '#ff5252'}, uuid: uuid()}])
+        setMessages([])
       } else if (msg.msg instanceof Array) {
         return msg.msg.map((cmd, i) =>
           <div key={i} style={{...msg.style, padding: i > 0 && '0px 10px'}}>{cmd}</div>
@@ -49,9 +48,9 @@ function Board() {
     <div
       style={{
         overflow: 'hidden',
-        height: '87%',
-        marginBottom: 5,
-        border: '1px solid #eee',
+        height: '81%',
+        display: 'flex',
+        background: '#f6f8fc',
       }}
     >
       <div
@@ -65,26 +64,18 @@ function Board() {
         }}
       >
         {messages.map(msg => {
-          const textAlign = userInfo.user.username === msg.username ? 'right' : 'left'
-
           return (
             <div
-              style={{
-                width: '98%',
-                textAlign,
-                margin: '10px 5px',
-                padding: '0px 5px'
-              }}
+              className='msg-container'
               key={msg.uuid}
             >
-              <div style={msg.style}>
+              <div style={{...msg.style, marginBottom: 10, color: '#6f6f6f'}}>
                 {displayMsg(msg)}
               </div>
               <div 
                 style={{
                   width: '100%',
                   fontSize: 9,
-                  textAlign
                 }}
               >
                 {msg.username} {msg.msgTime && moment(new Date(msg.msgTime)).format('MMM, DD HH:mm')}

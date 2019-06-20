@@ -39,7 +39,7 @@ function MessageBoardForm({username, theme}) {
 
   return (
     <form
-      style={{display: 'flex'}}
+      style={{display: 'flex', background: '#f6f8fc'}}
       onSubmit={handleSendMessage}
     >
       <input
@@ -47,8 +47,10 @@ function MessageBoardForm({username, theme}) {
           height: 35,
           width: '90%',
           flexDirection: 'column',
-          padding: '0px 5px',
+          padding: '11px 5px',
           border: '1px solid #eee',
+          borderTopLeftRadius: 10,
+          borderBottomLeftRadius: 10,
           ...colors[theme]
         }}
         placeholder='Enter message here...'
@@ -56,14 +58,7 @@ function MessageBoardForm({username, theme}) {
         value={msg}
       />
       <button
-        style={{
-          width: '10%',
-          flexDirection: 'column',
-          border: '1px solid #ddd',
-          alignItems: 'center',
-          background: colors[theme].btnBackground,
-          color: colors[theme].color
-        }}
+        className='send-msg'
         type='submit'
         value='submit'
       >send</button>

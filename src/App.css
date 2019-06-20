@@ -1,3 +1,7 @@
+body {
+  background: #f6f8fc;
+}
+
 .App {
   text-align: center;
   width: 90%;
@@ -15,17 +19,54 @@
 
 .hover-div:hover {
   cursor: pointer;
-  color: orange;
+  color: #2f80eb;
+}
+
+.lite-btn {
+  background: #fff;
+  color: #191d32;
+}
+
+.dark-btn {
+  background: #0c77eb;
+  color: #fff;
 }
 
 button {
   padding: 10px;
-  border: 1px solid #eee;
 }
 
-button:hover {
-  background: #ddd;
+
+.lite-btn:hover {
+  background: #2f80eb;
   cursor: pointer;
+}
+
+.msg-container {
+  background: #fff;
+  padding: 20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  width: 50%;
+  box-shadow: 0px 0px 15px -10px #ccc;
+  text-align: left;
+  margin: 10px 15px;
+  color: #b5b7bd;
+}
+
+.send-msg {
+  width: 10%;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(25, 29, 50);
+  padding: 19px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left: none;
+  border-top: 1px solid rgb(221, 221, 221);
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .spinner {

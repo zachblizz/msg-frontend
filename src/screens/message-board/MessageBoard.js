@@ -52,7 +52,8 @@ function MessageBoard() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 12
+            background: '#f2f3f7',
+            padding: 20
           }}
         >
           <div>welcome {userInfo.user.username}</div>

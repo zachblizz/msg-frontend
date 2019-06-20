@@ -1,6 +1,6 @@
 import React from 'react'
 import Loading from './Loading'
-import colors from '../utils/colors'
+// import colors from '../utils/colors'
 import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
 import { useTheme } from '../context/theme-context'
@@ -41,6 +41,8 @@ function OnlineUsers() {
         height: '100%',
         overflow: 'hidden',
         borderRight: '1px solid #eee',
+        background: '#fff',
+        padding: '0px 10px'
       }}
     >
       <div
@@ -64,11 +66,8 @@ function OnlineUsers() {
                   }}
                 >
                   <button
-                    style={{
-                      width: '80%',
-                      background: colors[theme].btnBackground,
-                      color: colors[theme].color
-                    }}
+                    className={theme === 'lite' ? 'lite-btn' : 'dark-btn'}
+                    style={{width: '80%'}}
                   >
                     {user.username}
                     {usersTyping[user.username] && '...'}
