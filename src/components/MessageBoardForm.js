@@ -44,22 +44,19 @@ function MessageBoardForm({username, theme}) {
     >
       <input
         style={{
-          height: 35,
-          width: '90%',
+          maxHeight: 35,
+          minHeight: 35,
+          minWidth: '96%',
           flexDirection: 'column',
-          padding: '11px 5px',
+          padding: '11px 15px',
           border: '1px solid #eee',
+          borderRadius: 5,
           ...colors[theme]
         }}
         placeholder='Enter message here...'
         onChange={onMessageChange}
         value={msg}
       />
-      <button
-        className='send-msg'
-        type='submit'
-        value='submit'
-      >send</button>
     </form>
   )
 }
