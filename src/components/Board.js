@@ -48,7 +48,10 @@ function Board() {
 
   return (
     <div className='board-container-no-scroll'>
-      <div className='board-container-scroll'>
+      <div
+        ref={boardRef}
+        className='board-container-scroll'
+      >
         {messages.map(msg => {
           const sameUser = userInfo.user.username === msg.username
           const color = sameUser ? '#fff' : '#585858'
