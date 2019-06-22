@@ -38,7 +38,7 @@ function OnlineUsers() {
   function startPrivateChat(username) {
     return () => {
       joinRoom({
-        room: username,
+        room: `/${username}`,
         requester: userInfo.user.username
       })
     }

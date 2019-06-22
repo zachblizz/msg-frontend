@@ -13,9 +13,11 @@ function Board() {
 
   React.useEffect(() => {
     if (socket) {
-      const msgCmd = room ? socketCmds.chatReceiveServerMsg : socketCmds.receiveServerMsg
-      socket.on(msgCmd, msg => setMessages([...messages, msg]))
-      return () => socket.removeEventListener(msgCmd)
+      socket.on(socketCmds.receiveServerMsg, msg => {
+        console.log(msg)
+        setMessages([...messages, msg])
+      })
+      return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
   }, [messages, socket, socketCmds, boardRef, room])
 

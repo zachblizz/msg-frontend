@@ -13,9 +13,9 @@ function MessageBoardForm({username, theme}) {
 
     setTyping(false)
     if (msg && msg.trim().length > 0) {
+      console.log(room)
       setMsg('')
-      const chatCmd = room ? socketCmds.chatReceiveClientMsg : socketCmds.receiveClientMsg
-      socket.emit(chatCmd, {
+      socket.emit(socketCmds.receiveClientMsg, {
         username,
         msg,
         msgTime: new Date(),

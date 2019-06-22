@@ -42,7 +42,7 @@ function MessageBoard() {
     if (socket && socketCmds && userInfo.user) {
       socket.emit(socketCmds.newUser, {username: userInfo.user.username})
       socket.on(socketCmds.askToJoin, ({requester, room}) => {
-        if (room === userInfo.user.username) {
+        if (room === `/${userInfo.user.username}`) {
           toast(
             <div style={{display: 'flex'}}>
               <div style={{width: '70%'}}>join chat with {requester}</div>

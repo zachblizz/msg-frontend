@@ -25,6 +25,22 @@ function SocketProvider({children}) {
     return []
   })
 
+  const joinRoom = React.useCallback((roomInfo) => {
+    // tell server to start new room
+    socket.emit(socketCmds.startPrivateChat, roomInfo)
+    // set current room in local storage
+    // localStorage.setItem(storageCmds.currentRoom, roomInfo.room)
+    // set room context
+    setRoom(roomInfo.room)
+    // update rooms context
+    setRooms(rooms => {
+      const tmpRooms = [...rooms, roomInfo.room]
+      // set rooms in local storage
+      // localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
+      return tmpRooms
+    })
+  }, [socket, socketCmds.startPrivateChat])
+
   React.useEffect(() => {
     async function getSocketCmds() {
       try {
@@ -37,26 +53,10 @@ function SocketProvider({children}) {
     }
 
     getSocketCmds()
-  }, [])
+  }, [room, joinRoom])
 
   function connect() {
     setSocket(io(`http://localhost:8080`, {transports: ['websocket']}))
-  }
-
-  function joinRoom(roomInfo) {
-    // tell server to start new room
-    socket.emit(socketCmds.startPrivateChat, roomInfo)
-    // set current room in local storage
-    localStorage.setItem(storageCmds.currentRoom, roomInfo.room)
-    // set room context
-    setRoom(roomInfo.room)
-    // update rooms context
-    setRooms(rooms => {
-      const tmpRooms = [...rooms, roomInfo.room]
-      // set rooms in local storage
-      localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
-      return tmpRooms
-    })
   }
 
   function leaveRoom(info) {
