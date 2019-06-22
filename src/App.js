@@ -2,7 +2,9 @@ import React from 'react'
 import Login from './screens/login/Login'
 import { useUser } from './context/user-context'
 import Loading from './components/Loading'
+import { ToastContainer } from 'react-toastify'
 
+import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
 const loadMessageBoard = () => import('./screens/message-board/MessageBoard')
@@ -23,6 +25,7 @@ function App() {
           <div>loading...</div>
         </Loading>
       }>
+        <ToastContainer />
         { userInfo && userInfo.user && userInfo.user.username
           ? <MessageBoard />
           : <Login />

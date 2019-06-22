@@ -6,7 +6,7 @@ import colors from '../utils/colors'
 function MessageBoardForm({username, theme}) {
   const [msg, setMsg] = React.useState('')
   const [typing, setTyping] = React.useState(false)
-  const { socket, socketCmds } = useSocket()
+  const { socket, socketCmds, room } = useSocket()
 
   function handleSendMessage(event) {
     event.preventDefault()
@@ -14,14 +14,16 @@ function MessageBoardForm({username, theme}) {
     setTyping(false)
     if (msg && msg.trim().length > 0) {
       setMsg('')
-      socket.emit(socketCmds.receiveClientMsg, {
+      const chatCmd = room ? socketCmds.chatReceiveClientMsg : socketCmds.receiveClientMsg
+      socket.emit(chatCmd, {
         username,
         msg,
         msgTime: new Date(),
-        uuid: uuid()
+        uuid: uuid(),
+        room
       })
 
-      socket.emit(socketCmds.doneTyping, {username})
+      socket.emit(socketCmds.doneTyping, {username, room})
     }
   }
 
@@ -30,10 +32,10 @@ function MessageBoardForm({username, theme}) {
     setMsg(msg)
     if (!typing) {
       setTyping(true)
-      socket.emit(socketCmds.typing, {username})
+      socket.emit(socketCmds.typing, {username, room})
     } else if (msg.trim().length === 0) {
       setTyping(false)
-      socket.emit(socketCmds.doneTyping, {username})
+      socket.emit(socketCmds.doneTyping, {username, room})
     }
   }
 

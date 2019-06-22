@@ -6,17 +6,18 @@ import { useUser } from '../context/user-context'
 import '../styles/Board.css'
 
 function Board() {
-  const { socket, socketCmds } = useSocket()
+  const { socket, socketCmds, room } = useSocket()
   const { userInfo } = useUser()
   const [messages, setMessages] = React.useState([])
   const boardRef = React.createRef()
 
   React.useEffect(() => {
     if (socket) {
-      socket.on(socketCmds.receiveServerMsg, msg => setMessages([...messages, msg]))
-      return () => socket.removeEventListener(socketCmds.receiveServerMsg)
+      const msgCmd = room ? socketCmds.chatReceiveServerMsg : socketCmds.receiveServerMsg
+      socket.on(msgCmd, msg => setMessages([...messages, msg]))
+      return () => socket.removeEventListener(msgCmd)
     }
-  }, [messages, socket, socketCmds.receiveServerMsg, boardRef])
+  }, [messages, socket, socketCmds, boardRef, room])
 
   React.useEffect(() => {
     const boardHeight = boardRef.current.scrollHeight
