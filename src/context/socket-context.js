@@ -22,24 +22,28 @@ function SocketProvider({children}) {
       return JSON.parse(localRooms)
     }
 
-    return []
+    return ['/']
   })
 
-  const joinRoom = React.useCallback((roomInfo) => {
-    // tell server to start new room
+  const joinRoom = React.useCallback(roomInfo => {
+    if (roomInfo.switch) {
+      socket.emit(socketCmds.leaveRoom, roomInfo)
+    } else {
+      // update rooms context
+      setRooms(rooms => {
+        const tmpRooms = [...rooms, roomInfo.room]
+        // set rooms in local storage
+        localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
+        return tmpRooms
+      })
+    }
+    // tell the server to start new room
     socket.emit(socketCmds.startPrivateChat, roomInfo)
     // set current room in local storage
-    // localStorage.setItem(storageCmds.currentRoom, roomInfo.room)
+    localStorage.setItem(storageCmds.currentRoom, roomInfo.room)
     // set room context
     setRoom(roomInfo.room)
-    // update rooms context
-    setRooms(rooms => {
-      const tmpRooms = [...rooms, roomInfo.room]
-      // set rooms in local storage
-      // localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
-      return tmpRooms
-    })
-  }, [socket, socketCmds.startPrivateChat])
+  }, [socket, socketCmds])
 
   React.useEffect(() => {
     async function getSocketCmds() {
@@ -55,8 +59,13 @@ function SocketProvider({children}) {
     getSocketCmds()
   }, [room, joinRoom])
 
-  function connect() {
-    setSocket(io(`http://localhost:8080`, {transports: ['websocket']}))
+  function connect(username) {
+    setSocket(socket => {
+      socket = io(`http://localhost:8080`, {transports: ['websocket']})
+      console.log('going to send newUser')
+      socket.emit(socketCmds.newUser, {username})
+      return socket
+    })
   }
 
   function leaveRoom(info) {
@@ -70,6 +79,7 @@ function SocketProvider({children}) {
   }
 
   function disconnect() {
+    console.log('disconnecting...')
     socket.disconnect()
     socket.removeAllListeners()
     setSocket(null)

@@ -19,6 +19,7 @@ function MessageBoard() {
     connect,
     disconnect,
     joinRoom,
+    room,
     rooms
   } = useSocket()
   const logout = React.useCallback(() => {
@@ -27,8 +28,27 @@ function MessageBoard() {
   }, [setUserInfo])
 
   React.useMemo(() => {
-    if (!socket && userInfo.user) {
-      connect()
+    if (!socket && userInfo.user && socketCmds.newUser) {
+      connect(userInfo.user.username)
+    } else if (socket && userInfo.user && socketCmds.askToJoin) {
+      socket.removeListener(socketCmds.askToJoin)
+      socket.on(socketCmds.askToJoin, ({requester, room}) => {
+        if (room === `/${userInfo.user.username}`) {
+          toast(
+            <div style={{display: 'flex'}}>
+              <div style={{width: '70%', alignItems: 'center'}}>join chat with {requester}</div>
+              <div
+                className='hover-div'
+                style={{width: '30%'}}
+                onClick={() => joinRoom({room})}
+              >
+                join
+              </div>
+            </div>,
+            { autoClose: false }
+          )
+        }
+      })
     }
 
     return () => {
@@ -36,27 +56,7 @@ function MessageBoard() {
         disconnect()
       }
     }
-  }, [socket, connect, disconnect, userInfo.user])
-
-  React.useMemo(() => {
-    if (socket && socketCmds && userInfo.user) {
-      socket.emit(socketCmds.newUser, {username: userInfo.user.username})
-      socket.on(socketCmds.askToJoin, ({requester, room}) => {
-        if (room === `/${userInfo.user.username}`) {
-          toast(
-            <div style={{display: 'flex'}}>
-              <div style={{width: '70%'}}>join chat with {requester}</div>
-              <div style={{width: '30%'}}>
-                <button onClick={() => joinRoom({room})}>join</button>
-              </div>
-            </div>
-          )
-        }
-      })
-    }
-
-    return () => socket.removeListener(socketCmds.askToJoin)
-  }, [socket, userInfo.user, socketCmds, joinRoom])
+  }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom])
 
   // React.useMemo(() => {
   //   if (socket && socketCmds) {
@@ -79,7 +79,16 @@ function MessageBoard() {
             <div className='hover-div' onClick={logout}>logout</div>
           </div>
         </div>
-        {rooms.map(room => <div key={room}>{room}</div>)}
+        {rooms.map(r => 
+          <div
+            key={r}
+            className='hover-div'
+            onClick={() => joinRoom({room: r, switch: true})}
+            disabled={r === room}
+          >
+            {r}
+          </div>)
+        }
         <Board />
         <MessageBoardForm username={userInfo.user.username} theme={theme} />
       </div>
