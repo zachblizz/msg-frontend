@@ -1,12 +1,14 @@
 import React from 'react'
 import uuid from 'uuid'
 import { useSocket } from '../context/socket-context'
+import { useRoom } from '../context/room-context'
 import colors from '../utils/colors'
 
 function MessageBoardForm({username, theme}) {
   const [msg, setMsg] = React.useState('')
   const [typing, setTyping] = React.useState(false)
-  const { socket, socketCmds, room } = useSocket()
+  const { socket, socketCmds } = useSocket()
+  const { room } = useRoom()
 
   function handleSendMessage(event) {
     event.preventDefault()
@@ -14,7 +16,6 @@ function MessageBoardForm({username, theme}) {
     setTyping(false)
     if (msg && msg.trim().length > 0) {
       console.log(room)
-      setMsg('')
       socket.emit(socketCmds.receiveClientMsg, {
         username,
         msg,
@@ -22,7 +23,8 @@ function MessageBoardForm({username, theme}) {
         uuid: uuid(),
         room
       })
-
+      
+      setMsg('')
       socket.emit(socketCmds.doneTyping, {username, room})
     }
   }

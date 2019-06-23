@@ -2,13 +2,14 @@ import React from 'react'
 import moment from 'moment'
 import { useSocket } from '../context/socket-context'
 import { useUser } from '../context/user-context'
+import { useMessages } from '../context/messages-context'
 
 import '../styles/Board.css'
 
 function Board() {
   const { socket, socketCmds, room } = useSocket()
   const { userInfo } = useUser()
-  const [messages, setMessages] = React.useState([])
+  const { messages, setMessages } = useMessages()
   const boardRef = React.createRef()
 
   React.useEffect(() => {
@@ -16,7 +17,7 @@ function Board() {
       socket.on(socketCmds.receiveServerMsg, msg => setMessages([...messages, msg]))
       return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
-  }, [messages, socket, socketCmds, boardRef, room])
+  }, [messages, setMessages, socket, socketCmds, boardRef, room])
 
   React.useEffect(() => {
     const boardHeight = boardRef.current.scrollHeight
@@ -44,7 +45,7 @@ function Board() {
 
       return msg.msg
     }
-  }, [])
+  }, [setMessages])
 
   return (
     <div className='board-container-no-scroll'>
@@ -52,7 +53,7 @@ function Board() {
         ref={boardRef}
         className='board-container-scroll'
       >
-        {messages.map(msg => {
+        {messages && messages.map(msg => {
           const sameUser = userInfo.user.username === msg.username
           const color = sameUser ? '#fff' : '#585858'
           const background = sameUser ? '#4e71ff' : '#fff'

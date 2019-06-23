@@ -15,12 +15,7 @@ import '../../styles/MsgBoard.css'
 function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
   const { theme } = useTheme()
-  const {
-    socket,
-    socketCmds,
-    connect,
-    disconnect,
-  } = useSocket()
+  const { socket, socketCmds, connect, disconnect } = useSocket()
   const { joinRoom } = useRoom()
   const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')

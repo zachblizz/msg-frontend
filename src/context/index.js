@@ -4,6 +4,7 @@ import { UserProvider, OnlineUsersProvider } from './user-context'
 import { ThemeProvider } from './theme-context'
 import { RoomProvider } from './room-context'
 import { ModalProvider } from './modal-context';
+import { MessagesProvider } from './messages-context';
 
 function AppProviders({ children }) {
   return (
@@ -12,9 +13,11 @@ function AppProviders({ children }) {
         <UserProvider>
           <OnlineUsersProvider>
             <SocketProvider>
-              <RoomProvider>
-                {children}
-              </RoomProvider>
+              <MessagesProvider>
+                <RoomProvider>
+                  {children}
+                </RoomProvider>
+              </MessagesProvider>
             </SocketProvider>
           </OnlineUsersProvider>
         </UserProvider>
