@@ -21,7 +21,19 @@ body, html {
 
 .hover-div:hover {
   cursor: pointer;
-  color: #2f80eb;
+  color: #2f80eb !important;
+}
+
+.hover-div.red:hover {
+  color: #ff5252 !important;
+}
+
+.room-edits {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
 }
 
 .lite-btn {

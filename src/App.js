@@ -3,6 +3,7 @@ import Login from './screens/login/Login'
 import { useUser } from './context/user-context'
 import Loading from './components/Loading'
 import { ToastContainer } from 'react-toastify'
+import Modal from './components/Modal'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
@@ -25,6 +26,7 @@ function App() {
           <div>loading...</div>
         </Loading>
       }>
+        <Modal />
         <ToastContainer />
         { userInfo && userInfo.user && userInfo.user.username
           ? <MessageBoard />

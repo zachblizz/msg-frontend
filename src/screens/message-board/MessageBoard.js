@@ -4,8 +4,10 @@ import OnlineUsers from '../../components/OnlineUsers'
 import Board from '../../components/Board'
 import MessageBoardForm from '../../components/MessageBoardForm'
 import DateTimeFluent from '../../components/DateTimeFluent'
+import Rooms from '../../components/Rooms'
 import { useUser } from '../../context/user-context'
 import { useSocket } from '../../context/socket-context'
+import { useRoom } from '../../context/room-context'
 import { useTheme } from '../../context/theme-context'
 
 import '../../styles/MsgBoard.css'
@@ -18,10 +20,8 @@ function MessageBoard() {
     socketCmds,
     connect,
     disconnect,
-    joinRoom,
-    room,
-    rooms
   } = useSocket()
+  const { joinRoom } = useRoom()
   const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')
     setUserInfo({})
@@ -79,16 +79,7 @@ function MessageBoard() {
             <div className='hover-div' onClick={logout}>logout</div>
           </div>
         </div>
-        {rooms.map(r => 
-          <div
-            key={r}
-            className='hover-div'
-            onClick={() => joinRoom({room: r, switch: true})}
-            disabled={r === room}
-          >
-            {r}
-          </div>)
-        }
+        <Rooms />
         <Board />
         <MessageBoardForm username={userInfo.user.username} theme={theme} />
       </div>

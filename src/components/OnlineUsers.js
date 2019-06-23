@@ -3,13 +3,15 @@ import Loading from './Loading'
 import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
 import { useTheme } from '../context/theme-context'
+import { useRoom } from '../context/room-context'
 
 import '../styles/Online.css'
 
 function OnlineUsers() {
   const { online, setOnline } = useOnline()
   const { userInfo, usersTyping, setUsersTyping } = useUser()
-  const { socket, socketCmds, joinRoom, rooms } = useSocket()
+  const { socket, socketCmds } = useSocket()
+  const { joinRoom, rooms } = useRoom()
   const { theme } = useTheme()
 
   React.useEffect(() => {
