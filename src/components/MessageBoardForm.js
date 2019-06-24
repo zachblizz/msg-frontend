@@ -15,7 +15,6 @@ function MessageBoardForm({username, theme}) {
 
     setTyping(false)
     if (msg && msg.trim().length > 0) {
-      console.log(room)
       socket.emit(socketCmds.receiveClientMsg, {
         username,
         msg,
@@ -23,7 +22,7 @@ function MessageBoardForm({username, theme}) {
         uuid: uuid(),
         room
       })
-      
+
       setMsg('')
       socket.emit(socketCmds.doneTyping, {username, room})
     }
