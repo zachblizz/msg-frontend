@@ -10,6 +10,8 @@ import { useSocket } from '../../context/socket-context'
 import { useRoom } from '../../context/room-context'
 import { useTheme } from '../../context/theme-context'
 
+import Bug from '../../assets/bug.png'
+
 import '../../styles/MsgBoard.css'
 
 function MessageBoard() {
@@ -70,7 +72,13 @@ function MessageBoard() {
           <div className='welcome-centered'>
             <div>welcome {userInfo.user.username}</div>
             <DateTimeFluent />
-            {/* <ThemeBtn /> */}
+            <a 
+              className='hover-div'
+              target='__blank'
+              href='https://github.com/zachblizz/msg-frontend/issues/new'
+            >
+              <img title='report a bug' style={{width: 30}} src={Bug} alt='bug' />
+            </a>
             <div className='hover-div' onClick={logout}>logout</div>
           </div>
         </div>

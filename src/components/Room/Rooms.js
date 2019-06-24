@@ -9,7 +9,9 @@ function Rooms() {
   return (
     <div
       style={{
-        display: 'flex'
+        display: 'flex',
+        width: '85%',
+        margin: '0 auto'
       }}
     >
       { rooms.map(r => 

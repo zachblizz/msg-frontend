@@ -15,7 +15,6 @@ function App() {
   const { userInfo } = useUser()
 
   React.useEffect(() => {
-    document.title = 'msg me'
     loadMessageBoard()
   }, [])
 

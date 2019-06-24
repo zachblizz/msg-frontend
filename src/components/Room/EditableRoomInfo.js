@@ -14,6 +14,15 @@ function EditableRoomInfo({ r, editRoom, setEditRoom }) {
     r.roomName = e.target.value
   }
 
+  function updateRoom() {
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        setEditRoom({editable: false, room: undefined})
+      }
+    })
+    setEditRoom({editable: true, room: r.room})
+  }
+
   if (editRoom.editable && editRoom.room === r.room) {
     return <form
       style={{ width: '100%', padding: 5 }}
@@ -21,7 +30,7 @@ function EditableRoomInfo({ r, editRoom, setEditRoom }) {
     >
       <input
         style={{ padding: 5, width: '90%' }}
-        placeholder='change name...'
+        placeholder={`old room: ${r.roomName || 'change name...'}`}
         onChange={newRoomName}
       />
     </form>
@@ -44,7 +53,7 @@ function EditableRoomInfo({ r, editRoom, setEditRoom }) {
       </div>
       <div
         className='hover-div room-edits'
-        onClick={() => setEditRoom({editable: true, room: r.room})}
+        onClick={updateRoom}
         style={{ width: '15%' }}
         title='edit room info'
       >
