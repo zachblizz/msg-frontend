@@ -22,18 +22,30 @@ function SocketProvider({children}) {
     getSocketCmds()
   }, [])
 
-  function connect() {
-    setSocket(io(`http://localhost:8080`, {transports: ['websocket']}))
+  function connect(username) {
+    setSocket(socket => {
+      socket = io(`http://localhost:8080`, {transports: ['websocket']})
+      socket.emit(socketCmds.newUser, {username})
+      return socket
+    })
   }
 
   function disconnect() {
+    console.log('disconnecting...')
     socket.disconnect()
     socket.removeAllListeners()
     setSocket(null)
   }
 
   return (
-    <SocketContext.Provider value={{socket, socketCmds, connect, disconnect}}>
+    <SocketContext.Provider 
+      value={{
+        socket,
+        socketCmds,
+        connect,
+        disconnect,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   )
@@ -42,12 +54,9 @@ function SocketProvider({children}) {
 function useSocket() {
   const context = React.useContext(SocketContext)
   if (context === undefined) {
-    throw new Error('useSocketCommands must be used within a SocketProvider')
+    throw new Error('useSocket must be used within a SocketProvider')
   }
   return context
 }
 
-export {
-  SocketProvider,
-  useSocket,
-}
+export { SocketProvider, useSocket }

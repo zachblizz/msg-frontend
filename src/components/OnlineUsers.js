@@ -1,16 +1,17 @@
 import React from 'react'
 import Loading from './Loading'
-// import colors from '../utils/colors'
 import { useOnline, useUser } from '../context/user-context'
 import { useSocket } from '../context/socket-context'
 import { useTheme } from '../context/theme-context'
+import { useRoom } from '../context/room-context'
 
 import '../styles/Online.css'
 
 function OnlineUsers() {
   const { online, setOnline } = useOnline()
-  const { usersTyping, setUsersTyping } = useUser()
+  const { userInfo, usersTyping, setUsersTyping } = useUser()
   const { socket, socketCmds } = useSocket()
+  const { joinRoom, rooms } = useRoom()
   const { theme } = useTheme()
 
   React.useEffect(() => {
@@ -36,6 +37,15 @@ function OnlineUsers() {
     }
   }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
+  function startPrivateChat(username) {
+    return () => {
+      joinRoom({
+        room: `/${username}`,
+        requester: userInfo.user.username
+      })
+    }
+  }
+
   return (
     <div className='online-container-no-scroll'>
       <div className='online-container-scroll'>
@@ -46,13 +56,16 @@ function OnlineUsers() {
             : online.map(user => (
                 <div 
                   key={user.username}
-                  style={{
-                    marginBottom: 7
-                  }}
+                  style={{marginBottom: 7}}
                 >
                   <button
                     className={theme === 'lite' ? 'lite-btn' : 'dark-btn'}
                     style={{width: '80%'}}
+                    disabled={
+                      rooms.includes(user.username) &&
+                      user.username !== userInfo.user.username
+                    }
+                    onClick={startPrivateChat(user.username)}
                   >
                     {user.username}
                     {usersTyping[user.username] && '...'}
