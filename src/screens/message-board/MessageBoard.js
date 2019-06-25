@@ -55,14 +55,7 @@ function MessageBoard() {
     }
   }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom, rooms])
 
-  // React.useMemo(() => {
-  //   if (socket && socketCmds) {
-  //     socket.on(socketCmds.loggedOut, leaveRoom)
-  //   }
-  //   return () => socket.removeListener(socketCmds.loggedOut)
-  // }, [socket, socketCmds, leaveRoom])
-
-  // React.useEffect(() => {}, [rooms])
+  console.log('msg board')
 
   return (
     <div className='msg-board-container'>

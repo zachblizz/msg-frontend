@@ -17,15 +17,15 @@ function Board() {
   React.useEffect(() => {
     if (socket) {
       socket.on(socketCmds.receiveServerMsg, msg => setMessages(messages => {
-        if (!messages[room.room]) {
-          return {...messages, [room.room]: [msg]}
+        if (!messages[msg.room.room]) {
+          return {...messages, [msg.room.room]: [msg]}
         } else {
-          return {...messages, [room.room]: [...messages[room.room], msg]}
+          return {...messages, [msg.room.room]: [...messages[msg.room.room], msg]}
         }
       }))
       return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
-  }, [messages, setMessages, socket, socketCmds, boardRef, room])
+  }, [messages, setMessages, socket, socketCmds, boardRef])
 
   React.useEffect(() => {
     const boardHeight = boardRef.current.scrollHeight
