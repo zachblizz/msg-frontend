@@ -1,0 +1,33 @@
+.modal-container {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, .6);
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper {
+  background: #eee;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.modal-header {
+  height: 20%;
+  background: #fff;
+  padding: 10px;
+  position: relative;
+}
+
+.modal-header > .hover-div {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+
+.modal-content {
+  height: 80%;
+  padding: 15px;
+}
