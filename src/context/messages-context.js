@@ -14,7 +14,7 @@ messages = {
 }
 */
 function MessagesProvider({children}) {
-  const [messages, setMessages] = React.useState([])
+  const [messages, setMessages] = React.useState({})
 
   return (
     <MessagesContext.Provider value={{messages, setMessages}}>

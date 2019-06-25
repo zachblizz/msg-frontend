@@ -29,8 +29,6 @@ function RoomProvider({children}) {
   })
 
   const joinRoom = React.useCallback(roomInfo => {
-    setMessages([])
-
     if (roomInfo.switch) {
       socket.emit(socketCmds.leaveRoom, roomInfo)
     } else {
@@ -48,7 +46,7 @@ function RoomProvider({children}) {
     localStorage.setItem(storageCmds.currentRoom, JSON.stringify(roomInfo))
     // set room context
     setRoom(roomInfo)
-  }, [socket, socketCmds, setMessages])
+  }, [socket, socketCmds])
 
   function leaveRoom(roomInfo) {
     const room = roomInfo.room
