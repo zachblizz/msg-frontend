@@ -16,10 +16,16 @@ function Board() {
 
   React.useEffect(() => {
     if (socket) {
-      socket.on(socketCmds.receiveServerMsg, msg => setMessages([...messages, msg]))
+      socket.on(socketCmds.receiveServerMsg, msg => setMessages(messages => {
+        if (!messages[room.room]) {
+          return {...messages, [room.room]: [msg]}
+        } else {
+          return {...messages, [room.room]: [...messages[room.room], msg]}
+        }
+      }))
       return () => socket.removeEventListener(socketCmds.receiveServerMsg)
     }
-  }, [messages, setMessages, socket, socketCmds, boardRef])
+  }, [messages, setMessages, socket, socketCmds, boardRef, room])
 
   React.useEffect(() => {
     const boardHeight = boardRef.current.scrollHeight
@@ -28,7 +34,7 @@ function Board() {
     boardRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
   }, [messages, boardRef])
 
-  const displayMsg = React.useCallback((msg) => {
+  const displayMsg = React.useCallback(msg => {
     if (msg.msg === '/clear') {
       setMessages([])
     } else if (msg.msg instanceof Array) {
@@ -53,7 +59,7 @@ function Board() {
         ref={boardRef}
         className='board-container-scroll'
       >
-        { messages && messages.map(msg => {
+        { messages && messages[room.room] && messages[room.room].map(msg => {
           const canViewMsg = msg && msg.room && msg.room.room === room.room
           const sameUser = userInfo.user.username === msg.username
           const color = sameUser ? '#fff' : '#585858'

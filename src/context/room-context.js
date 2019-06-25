@@ -29,7 +29,7 @@ function RoomProvider({children}) {
   })
 
   const joinRoom = React.useCallback(roomInfo => {
-    setMessages([])
+    // setMessages([])
 
     if (roomInfo.switch) {
       socket.emit(socketCmds.leaveRoom, roomInfo)
