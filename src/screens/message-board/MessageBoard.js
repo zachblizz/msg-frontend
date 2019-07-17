@@ -18,7 +18,7 @@ function MessageBoard() {
   const { userInfo, setUserInfo } = useUser()
   const { theme } = useTheme()
   const { socket, socketCmds, connect, disconnect } = useSocket()
-  const { joinRoom } = useRoom()
+  const { joinRoom, rooms } = useRoom()
   const logout = React.useCallback(() => {
     localStorage.removeItem('client:user')
     setUserInfo({})
@@ -30,7 +30,7 @@ function MessageBoard() {
     } else if (socket && userInfo.user && socketCmds.askToJoin) {
       socket.removeListener(socketCmds.askToJoin)
       socket.on(socketCmds.askToJoin, ({requester, room}) => {
-        if (room === `/${userInfo.user.username}`) {
+        if (room === `/${userInfo.user.username}` && !rooms.find(r => r.room === room)) {
           toast(
             <div style={{display: 'flex'}}>
               <div style={{width: '70%', alignItems: 'center'}}>join chat with {requester}</div>
@@ -53,16 +53,7 @@ function MessageBoard() {
         disconnect()
       }
     }
-  }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom])
-
-  // React.useMemo(() => {
-  //   if (socket && socketCmds) {
-  //     socket.on(socketCmds.loggedOut, leaveRoom)
-  //   }
-  //   return () => socket.removeListener(socketCmds.loggedOut)
-  // }, [socket, socketCmds, leaveRoom])
-
-  // React.useEffect(() => {}, [rooms])
+  }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom, rooms])
 
   return (
     <div className='msg-board-container'>

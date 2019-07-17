@@ -29,7 +29,7 @@ function RoomProvider({ children }) {
   })
 
   const joinRoom = React.useCallback(roomInfo => {
-    // don't want to join a new room
+    // don't want to join to start a private room twice
     if (!rooms.find(r => r.room === roomInfo.room)) {
       setMessages([])
 
