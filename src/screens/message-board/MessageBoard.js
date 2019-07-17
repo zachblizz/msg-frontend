@@ -30,7 +30,7 @@ function MessageBoard() {
     } else if (socket && userInfo.user && socketCmds.askToJoin) {
       socket.removeListener(socketCmds.askToJoin)
       socket.on(socketCmds.askToJoin, ({requester, room}) => {
-        if (room === `/${userInfo.user.username}` && !rooms.find(r => r.room !== room)) {
+        if (room === `/${userInfo.user.username}` && !rooms.find(r => r.room === room)) {
           toast(
             <div style={{display: 'flex'}}>
               <div style={{width: '70%', alignItems: 'center'}}>join chat with {requester}</div>
@@ -54,8 +54,6 @@ function MessageBoard() {
       }
     }
   }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom, rooms])
-
-  console.log('msg board')
 
   return (
     <div className='msg-board-container'>
