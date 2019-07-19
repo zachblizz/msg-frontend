@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSocket } from './socket-context'
-import { useMessages } from './messages-context'
 
 const storageCmds = {
   currentRoom: 'client:current-room',
@@ -11,7 +10,6 @@ const RoomContext = React.createContext()
 
 function RoomProvider({ children }) {
   const { socket, socketCmds } = useSocket()
-  const { setMessages } = useMessages()
   const [room, setRoom] = React.useState(() => {
     const localRoom = localStorage.getItem(storageCmds.currentRoom)
     if (localRoom) {
@@ -31,8 +29,6 @@ function RoomProvider({ children }) {
   const joinRoom = React.useCallback(roomInfo => {
     // don't want to join to start a private room twice
     if (!rooms.find(r => r.room === roomInfo.room)) {
-      setMessages([])
-
       if (roomInfo.switch) {
         socket.emit(socketCmds.leaveRoom, roomInfo)
       } else {
@@ -52,7 +48,7 @@ function RoomProvider({ children }) {
     localStorage.setItem(storageCmds.currentRoom, JSON.stringify(roomInfo))
     // set room context
     setRoom(roomInfo)
-  }, [socket, socketCmds, setMessages, rooms])
+  }, [socket, socketCmds, rooms])
 
   function leaveRoom(roomInfo) {
     const room = roomInfo.room
