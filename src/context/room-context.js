@@ -9,7 +9,7 @@ const storageCmds = {
 
 const RoomContext = React.createContext()
 
-function RoomProvider({children}) {
+function RoomProvider({ children }) {
   const { socket, socketCmds } = useSocket()
   const { setMessages } = useMessages()
   const [room, setRoom] = React.useState(() => {
@@ -17,7 +17,7 @@ function RoomProvider({children}) {
     if (localRoom) {
       return JSON.parse(localRoom)
     }
-    return {room: '/', roomName: 'general'}
+    return { room: '/', roomName: 'general' }
   })
   const [rooms, setRooms] = React.useState(() => {
     const localRooms = localStorage.getItem(storageCmds.rooms)
@@ -25,32 +25,38 @@ function RoomProvider({children}) {
       return JSON.parse(localRooms)
     }
 
-    return [{room: '/', chatName: 'general'}]
+    return [{ room: '/', chatName: 'general' }]
   })
 
   const joinRoom = React.useCallback(roomInfo => {
-    if (roomInfo.switch) {
-      socket.emit(socketCmds.leaveRoom, roomInfo)
-    } else {
-      // update rooms context
-      setRooms(rooms => {
-        const tmpRooms = [...rooms, roomInfo]
-        // set rooms in local storage
-        localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
-        return tmpRooms
-      })
+    // don't want to join to start a private room twice
+    if (!rooms.find(r => r.room === roomInfo.room)) {
+      setMessages([])
+
+      if (roomInfo.switch) {
+        socket.emit(socketCmds.leaveRoom, roomInfo)
+      } else {
+        // update rooms context
+        setRooms(rooms => {
+          const tmpRooms = [...rooms, roomInfo]
+          // set rooms in local storage
+          localStorage.setItem(storageCmds.rooms, JSON.stringify(tmpRooms))
+          return tmpRooms
+        })
+      }
+      // tell the server to start new room
+      socket.emit(socketCmds.startPrivateChat, roomInfo)
     }
-    // tell the server to start new room
-    socket.emit(socketCmds.startPrivateChat, roomInfo)
+
     // set current room in local storage
     localStorage.setItem(storageCmds.currentRoom, JSON.stringify(roomInfo))
     // set room context
     setRoom(roomInfo)
-  }, [socket, socketCmds])
+  }, [socket, socketCmds, setMessages, rooms])
 
   function leaveRoom(roomInfo) {
     const room = roomInfo.room
-    socket.emit(socketCmds.leaveRoom, {room})
+    socket.emit(socketCmds.leaveRoom, { room })
     setRooms(rooms => {
       // filter out room left
       const tmpRooms = rooms.filter(r => r.room !== room)
@@ -60,7 +66,7 @@ function RoomProvider({children}) {
       const generalRoom = tmpRooms.find(r => r.room === '/')
       localStorage.setItem(storageCmds.currentRoom, JSON.stringify(generalRoom))
       setRoom(generalRoom)
-      joinRoom({...generalRoom, switch: true})
+      joinRoom({ ...generalRoom, switch: true })
 
       return tmpRooms
     })
@@ -83,7 +89,7 @@ function RoomProvider({children}) {
 
   return (
     <RoomContext.Provider
-      value = {{
+      value={{
         room,
         setRoom,
         rooms,
