@@ -1,38 +1,17 @@
 import React from 'react'
 import moment from 'moment'
-import { useSocket } from '../context/socket-context'
+
 import { useUser } from '../context/user-context'
-import { useMessages } from '../context/messages-context'
 import { useRoom } from '../context/room-context'
+
+import { useUpdateBoard } from '../custom-hooks/board'
 
 import '../styles/Board.css'
 
 function Board() {
-  const { socket, socketCmds } = useSocket()
+  const { boardRef, messages, setMessages } = useUpdateBoard()
   const { userInfo } = useUser()
-  const { messages, setMessages } = useMessages()
-  const boardRef = React.createRef()
   const { room } = useRoom()
-
-  React.useEffect(() => {
-    if (socket) {
-      socket.on(socketCmds.receiveServerMsg, msg => setMessages(messages => {
-        if (!messages[msg.room.room]) {
-          return {...messages, [msg.room.room]: [msg]}
-        } else {
-          return {...messages, [msg.room.room]: [...messages[msg.room.room], msg]}
-        }
-      }))
-      return () => socket.removeEventListener(socketCmds.receiveServerMsg)
-    }
-  }, [messages, setMessages, socket, socketCmds, boardRef])
-
-  React.useEffect(() => {
-    const boardHeight = boardRef.current.scrollHeight
-    const clientHeight = boardRef.current.clientHeight
-    const maxScrollTop = boardHeight - clientHeight
-    boardRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
-  }, [messages, boardRef])
 
   const displayMsg = React.useCallback(msg => {
     if (msg.msg === '/clear') {

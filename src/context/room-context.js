@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSocket } from './socket-context'
-import { useMessages } from './messages-context'
 
 const storageCmds = {
   currentRoom: 'client:current-room',
@@ -11,7 +10,6 @@ const RoomContext = React.createContext()
 
 function RoomProvider({children}) {
   const { socket, socketCmds } = useSocket()
-  const { setMessages } = useMessages()
   const [room, setRoom] = React.useState(() => {
     const localRoom = localStorage.getItem(storageCmds.currentRoom)
     if (localRoom) {

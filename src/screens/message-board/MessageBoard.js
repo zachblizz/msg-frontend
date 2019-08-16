@@ -55,8 +55,6 @@ function MessageBoard() {
     }
   }, [socket, connect, disconnect, userInfo.user, socketCmds, joinRoom, rooms])
 
-  console.log('msg board')
-
   return (
     <div className='msg-board-container'>
       { window.innerWidth > 400 && <OnlineUsers /> }
