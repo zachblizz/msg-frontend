@@ -40,7 +40,7 @@ function EditableRoomInfo({ r, editRoom, setEditRoom }) {
     <>
       <div
         style={{
-          color: room === r ? 'orange' : '#555',
+          color: room.room === r.room ? 'orange' : '#555',
           padding: 6,
           width: '80%'
         }}

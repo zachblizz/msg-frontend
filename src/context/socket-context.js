@@ -24,7 +24,7 @@ function SocketProvider({children}) {
 
   function connect(username) {
     setSocket(socket => {
-      socket = io(`http://localhost:8080`, {transports: ['websocket']})
+      socket = io(`https://msg-backend.herokuapp.com`, {transports: ['websocket']})
       socket.emit(socketCmds.newUser, {username})
       return socket
     })

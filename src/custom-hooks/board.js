@@ -21,20 +21,18 @@ function useUpdateBoard() {
     }
   }, [messages, setMessages, socket, socketCmds, boardRef])
 
-  useUpdateScroll(boardRef)
+  useUpdateScroll(boardRef, messages)
 
   return { boardRef, messages, setMessages }
 }
 
-function useUpdateScroll(boardRef) {
-  const { messages } = useMessages()
-
+function useUpdateScroll(scrollRef, runEffect) {
   useEffect(() => {
-    const boardHeight = boardRef.current.scrollHeight
-    const clientHeight = boardRef.current.clientHeight
+    const boardHeight = scrollRef.current.scrollHeight
+    const clientHeight = scrollRef.current.clientHeight
     const maxScrollTop = boardHeight - clientHeight
-    boardRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
-  }, [messages, boardRef])
+    scrollRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
+  }, [runEffect, scrollRef])
 }
 
-export { useUpdateBoard }
+export { useUpdateBoard, useUpdateScroll }
