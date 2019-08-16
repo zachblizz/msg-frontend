@@ -19,7 +19,7 @@ function MessageBoard() {
   const { theme } = useTheme()
   const { socket, socketCmds, connect, disconnect } = useSocket()
   const { joinRoom, rooms } = useRoom()
-  const logout = React.useCallback(() => {
+  const leave = React.useCallback(() => {
     localStorage.removeItem('client:user')
     setUserInfo({})
   }, [setUserInfo])
@@ -70,7 +70,7 @@ function MessageBoard() {
             >
               <img title='report a bug' style={{width: 30}} src={Bug} alt='bug' />
             </a>
-            <div className='hover-div' onClick={logout}>logout</div>
+            <div className='hover-div' onClick={leave}>leave</div>
           </div>
         </div>
         <Rooms />

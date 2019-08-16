@@ -1,41 +1,19 @@
 import React from 'react'
+
 import Loading from './Loading'
-import { useOnline, useUser } from '../context/user-context'
-import { useSocket } from '../context/socket-context'
+
 import { useTheme } from '../context/theme-context'
 import { useRoom } from '../context/room-context'
+
+import { useOnlineUsers } from '../custom-hooks/online-users'
 
 import '../styles/Online.css'
 
 function OnlineUsers() {
-  const { online, setOnline } = useOnline()
-  const { userInfo, usersTyping, setUsersTyping } = useUser()
-  const { socket, socketCmds } = useSocket()
+  const { online, userInfo, usersTyping } = useOnlineUsers()
   const { joinRoom, rooms } = useRoom()
   const { theme } = useTheme()
 
-  React.useEffect(() => {
-    if (socket && socketCmds) {
-      socket.on(socketCmds.sendOnlineUsers, ({onlineUsers}) => setOnline(onlineUsers))
-      socket.on(socketCmds.typing, ({user}) => {
-        if (user) {
-          setUsersTyping({...usersTyping, [user.username]: true})
-        }
-      })
-      socket.on(socketCmds.doneTyping, ({user}) => {
-        if (user) {
-          delete usersTyping[user.username]
-          setUsersTyping({...usersTyping})
-        }
-      })
-
-      return () => {
-        socket.removeEventListener(socketCmds.typing)
-        socket.removeEventListener(socketCmds.doneTyping)
-        socket.removeEventListener(socketCmds.sendOnlineUsers)
-      }
-    }
-  }, [socket, socketCmds, setUsersTyping, usersTyping, setOnline])
 
   function startPrivateChat(username) {
     return () => {
