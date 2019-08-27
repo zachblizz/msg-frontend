@@ -1,6 +1,6 @@
 import colors from './colors'
 
-const API_URL = 'http://localhost:8080'
+const API_URL = 'https://msg-backend.herokuapp.com'
 
 function getContainerStyle(theme) {
   if (window.innerWidth < 400) {
