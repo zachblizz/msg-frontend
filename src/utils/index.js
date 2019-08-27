@@ -1,5 +1,7 @@
 import colors from './colors'
 
+const API_URL = 'https://msg-backend.herokuapp.com'
+
 function getContainerStyle(theme) {
   if (window.innerWidth < 400) {
     return {
@@ -35,6 +37,7 @@ function getInnerContainerStyle() {
 }
 
 export {
+  API_URL,
   getContainerStyle,
   getInnerContainerStyle
 }

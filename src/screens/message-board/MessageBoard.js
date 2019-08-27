@@ -1,28 +1,24 @@
 import React from 'react'
 import { toast } from 'react-toastify'
-import OnlineUsers from '../../components/OnlineUsers'
+
 import Board from '../../components/Board'
 import MessageBoardForm from '../../components/MessageBoardForm'
-import DateTimeFluent from '../../components/DateTimeFluent'
+import Nav from '../../components/Nav'
+import OnlineUsers from '../../components/OnlineUsers'
 import Rooms from '../../components/Room/Rooms'
-import { useUser } from '../../context/user-context'
-import { useSocket } from '../../context/socket-context'
-import { useRoom } from '../../context/room-context'
-import { useTheme } from '../../context/theme-context'
 
-import Bug from '../../assets/bug.png'
+import { useRoom } from '../../context/room-context'
+import { useSocket } from '../../context/socket-context'
+import { useTheme } from '../../context/theme-context'
+import { useUser } from '../../context/user-context'
 
 import '../../styles/MsgBoard.css'
 
 function MessageBoard() {
-  const { userInfo, setUserInfo } = useUser()
+  const { userInfo } = useUser()
   const { theme } = useTheme()
   const { socket, socketCmds, connect, disconnect } = useSocket()
   const { joinRoom, rooms } = useRoom()
-  const leave = React.useCallback(() => {
-    localStorage.removeItem('client:user')
-    setUserInfo({})
-  }, [setUserInfo])
 
   React.useMemo(() => {
     if (!socket && userInfo.user && socketCmds.newUser) {
@@ -59,20 +55,7 @@ function MessageBoard() {
     <div className='msg-board-container'>
       { window.innerWidth > 400 && <OnlineUsers /> }
       <div className='msg-board-inner-container'>
-        <div className='welcome-container'>
-          <div className='welcome-centered'>
-            <div>welcome {userInfo.user.username}</div>
-            <DateTimeFluent />
-            <a 
-              className='hover-div'
-              target='__blank'
-              href='https://github.com/zachblizz/msg-frontend/issues/new'
-            >
-              <img title='report a bug' style={{width: 30}} src={Bug} alt='bug' />
-            </a>
-            <div className='hover-div' onClick={leave}>leave</div>
-          </div>
-        </div>
+        <Nav />
         <Rooms />
         <Board />
         <MessageBoardForm username={userInfo.user.username} theme={theme} />
