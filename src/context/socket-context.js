@@ -1,5 +1,7 @@
 import React from 'react'
 import io from 'socket.io-client'
+
+import { API_URL } from '../utils'
 import client from '../utils/api-client'
 
 const SocketContext = React.createContext()
@@ -24,7 +26,7 @@ function SocketProvider({children}) {
 
   function connect(username) {
     setSocket(socket => {
-      socket = io(`https://msg-backend.herokuapp.com`, {transports: ['websocket']})
+      socket = io(API_URL, {transports: ['websocket']})
       socket.emit(socketCmds.newUser, {username})
       return socket
     })

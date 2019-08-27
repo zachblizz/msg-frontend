@@ -1,3 +1,5 @@
+import { API_URL } from "."
+
 function client(endpoint, {body, ...customConfig} = {}) {
   const headers = {'content-type': 'application/json'}
   const config = {
@@ -13,7 +15,7 @@ function client(endpoint, {body, ...customConfig} = {}) {
     config.body = JSON.stringify(body)
   }
 
-  return fetch(`https://msg-backend.herokuapp.com/api/${endpoint}`, config)
+  return fetch(`${API_URL}/api/${endpoint}`, config)
     .then(r => r.json())
 }
 
